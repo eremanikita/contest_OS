@@ -11,8 +11,8 @@ typedef struct
 
 typedef struct _RandomSourceOperations
 {
-    RandomSource * (*destroy) (RandomSource *);
-    double (*next) (RandomSource *);
+    RandomSource *(*destroy)(RandomSource *);
+    double (*next)(RandomSource *);
 } RandomSourceOperations;
 
 #endif

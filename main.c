@@ -14,7 +14,7 @@ int
 main(int argc, char *argv[])
 {
     void *handle = dlopen(NULL, RTLD_LAZY);
-    RandomSource * (* ptr_func) (const char *params) = NULL;
+    RandomSource *(*ptr_func)(const char *params) = NULL;
     RandomSource *ptr_value = NULL;
     int n;
     sscanf(argv[SECOND_PARAM], "%d", &n);
