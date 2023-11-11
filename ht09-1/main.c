@@ -19,6 +19,7 @@ main(int argc, char *argv[])
     }
     RandomSource *(*ptr_func)(const char *params) = NULL;
     RandomSource *ptr_value = NULL;
+    
     int n;
     sscanf(argv[SECOND_PARAM], "%d", &n);
     if (!strcmp(argv[FIRST_PARAM], "linear")) {
