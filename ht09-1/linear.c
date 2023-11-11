@@ -1,37 +1,40 @@
-#include "random_source.h"
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
+#include "random_source.h"
+
+enum
+{
+    A = 1103515245,
+    C = 12345,
+    M = 2147483648,
+    SIZE_SOURCE = sizeof(RandomSource),
+    SIZE_OPS = sizeof(RandomSourceOperations)
+};
 
 RandomSource *
 linear_destroy(RandomSource *src)
 {
-    printf("dfdf");
-//    free(src->ops);
-//    free(src);
+    free(src->ops);
+    free(src);
     return NULL;
 }
-
 double
 linear_next(RandomSource *src)
 {
-    unsigned long long A = 1103515245;
-    unsigned long long C = 12345;
-    unsigned long long M = 1ull << 31;
-    src->value = (A * src->value + C) % M;
-    return src->value / ((double) M);
+    src->value = (src->value * A + C) % M;
+    return (double) src->value / M;
 }
 
 RandomSource *
-random_linear_factory(const char *seed)
+random_linear_factory(const char *params)
 {
-    RandomSource *rr = calloc(1, sizeof(RandomSource));
-    sscanf(seed, "%llu", &rr->value);
-    rr->ops = calloc(1, sizeof(rr->ops));
-    rr->ops->destroy = linear_destroy;
-    rr->ops->next = linear_next;
-    sleep(5);
-    printf("%d - lin dest\n", rr->ops->destroy);
-    printf("%d - lin next\n", rr->ops->next);
-    return rr;
+    unsigned long long seed;
+    sscanf(params, "%llu", &seed);
+    RandomSource *ptr = calloc(1, SIZE_SOURCE);
+    RandomSourceOperations *ptr_ops = calloc(1, SIZE_OPS);
+    ptr->value = seed;
+    ptr->ops = ptr_ops;
+    ptr->ops->destroy = linear_destroy;
+    ptr->ops->next = linear_next;
+    return ptr;
 }
